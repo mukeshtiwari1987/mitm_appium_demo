@@ -24,7 +24,7 @@
 * Start appium script with following command python3 raw.py
 
 #### Working Demo
-<a href="https://drive.google.com/file/d/1-_eJO1KnMnSfXxKLWQvrynPC97QpH4FK/view?usp=sharing" target="_blank">
+<a href="https://drive.google.com/file/d/1m-wKlbo8GTsUyo0onphXTSt__fd0ARGW/view?usp=sharing" target="_blank">
 <img src="https://i.ibb.co/JdyM5f1/vlcsnap-2020-06-14-01h29m24s194.png" 
-alt="demo image" width="240" height="180" border="10" />
+alt="demo image" width="480" height="360" border="50" />
 </a>
