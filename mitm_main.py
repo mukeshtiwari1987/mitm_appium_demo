@@ -17,10 +17,10 @@ def request(flow: http.HTTPFlow):
             save_pn_as_json(content, flow.request.pretty_url.split('/')[3])
 
 
-def save_pn_as_json(content, url):
+def save_pn_as_json(content, url_endpoint):
     content_before_data = content.split('=')
     content_after_data = content_before_data[1]
-    with open(url + ".json", "w") as write_file:
+    with open(url_endpoint + ".json", "w") as write_file:
         json.dump(content_after_data, write_file)
 
 

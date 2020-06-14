@@ -21,7 +21,7 @@
 * Start MITMProxy with following command ```mitmdump -s mitm_main.py --ignore-hosts '^(?![0-9\.]+:)(?!([^\.:]+\.)*netcoresmartech\.com:)'```
 
 #### Execute Appium script
-* Start appium script with following command ```pytest -s test_pn.py```
+* Start appium script with following command ```pytest -s test_pn.py --html=report.html --self-contained-html```
 
 #### Working Demo
 <a href="https://drive.google.com/file/d/1m-wKlbo8GTsUyo0onphXTSt__fd0ARGW/view?usp=sharing" target="_blank">

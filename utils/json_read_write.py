@@ -12,7 +12,6 @@ TRID = CID + "-" + MID + "-" + USER_ID + "-" + JOURNEY_ID + "-"
 
 def generate_trid():
     current_time_object = datetime.datetime.now()
-    print("current_time_object: ", current_time_object)
     current_time = current_time_object.strftime("%y" + "%m" + "%d" + "%H" + "%M" + "%S")
     print("current_time: ", current_time)
     trid = TRID + current_time
