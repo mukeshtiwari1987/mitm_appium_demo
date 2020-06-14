@@ -15,13 +15,13 @@
 	````
 
 #### Appium Set up
-* Start Appium with following command appium --relaxed-security --log-timestamp --local-timezone
+* Start Appium with following command ```appium --relaxed-security --log-timestamp --local-timezone```
 
 #### MITMProxy Set up
-* Start MITMProxy with following command mitmdump -s main_script.py
+* Start MITMProxy with following command ```mitmdump -s mitm_main.py --ignore-hosts '^(?![0-9\.]+:)(?!([^\.:]+\.)*netcoresmartech\.com:)'```
 
 #### Execute Appium script
-* Start appium script with following command python3 raw.py
+* Start appium script with following command ```pytest -s test_pn.py```
 
 #### Working Demo
 <a href="https://drive.google.com/file/d/1m-wKlbo8GTsUyo0onphXTSt__fd0ARGW/view?usp=sharing" target="_blank">

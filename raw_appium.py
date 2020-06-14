@@ -8,12 +8,14 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from appium import webdriver
 
+from utils.json_read_write import get_token_from_pn_reg_json, get_pn_deliver_json, generate_trid
 import fcm_request
+
 
 user_token = "None"
 
 APK_LOCATION = '/home/mukesh.tiwari/Downloads/nativeapps/' \
-               '2020-01-06-SDKv2_prdev_email_mukesh-abd287cc44a98d21f54303f9c656f138.apk'
+               '2020-05-26-bkram_test_a43fb6fc9f588f00c18a2e931c53a61c-2.5.1_without_xiaomi.apk'
 
 SHORT_WAIT = 5
 MEDIUM_WAIT = 15
@@ -22,7 +24,6 @@ LONG_WAIT = 30
 desired_caps = {'platformName': 'Android',
                 'platformVersion': '8.1.0',
                 'deviceName': 'emulator-5554',
-                # 'appPackage': 'com.smartech.nativedemo',
                 'automationName': 'UiAutomator2',
                 'fullReset': 'false',
                 'eventTimings': 'true',
@@ -30,24 +31,11 @@ desired_caps = {'platformName': 'Android',
                 'autoGrantPermissions': 'true',
                 'app': APK_LOCATION}
 
-
+print("starting appium driver")
 driver = webdriver.Remote("http://0.0.0.0:4723/wd/hub", desired_caps)
 driver.implicitly_wait(5)
 
 pn_ah_message_text = "Redirection AH"
-
-
-def get_token_from_json():
-    WebDriverWait(driver, 15).until(ec.presence_of_element_located((By.ID, "skipTextView")))
-    time.sleep(MEDIUM_WAIT)
-
-    with open("pn_register.json", "r") as pn_reg_file:
-        json_file_content = json.load(pn_reg_file)
-        json_file_content = json.loads(json_file_content)
-    print("get_token_from_json", json_file_content['token'])
-
-    global user_token
-    user_token = json_file_content['token']
 
 
 # def get_token_from_ui():
@@ -73,8 +61,17 @@ def clear_pn():
 
 def simple_pn_ah():
     print("starting simple_pn_ah()")
-    print("token from simple_pn_ah", user_token)
+
     simple_pn_ah_title = "Simple Android Push Notification AH"
+    WebDriverWait(driver, 15).until(ec.presence_of_element_located((By.ID, "skipTextView")))
+    time.sleep(MEDIUM_WAIT)
+
+    print("before get token from json in simple pn ah")
+    global user_token
+    user_token = get_token_from_pn_reg_json()
+    print("after get token from json in simple pn ah")
+    trid = generate_trid()
+    print("trid :", trid)
 
     fcm_response = fcm_request.execute_rest_api(user_token,
                                                 image="",
@@ -82,7 +79,8 @@ def simple_pn_ah():
                                                 title=simple_pn_ah_title,
                                                 message=pn_ah_message_text,
                                                 action_button=[],
-                                                carousel=[])
+                                                carousel=[],
+                                                trid=trid)
 
     print(fcm_response)
     driver.open_notifications()
@@ -91,10 +89,19 @@ def simple_pn_ah():
 
     wait = WebDriverWait(driver, 30, 10)
     try:
-        simple_pn_ah_title = wait.until(ec.visibility_of_element_located((
+        simple_pn_ah_title_on_device = wait.until(ec.visibility_of_element_located((
             By.XPATH, "//android.widget.TextView[contains(@text, 'Simple Android Push Notification AH')]")))
-    except TimeoutException as ex:
+        assert simple_pn_ah_title_on_device.text == simple_pn_ah_title
+    except TimeoutException:
         print("Could not find simple_pn_ah_title")
+
+    try:
+        if simple_pn_ah_title_on_device.text == simple_pn_ah_title:
+            pn_deliver_json = get_pn_deliver_json()
+            print("pn_deliver_json in simple_pn_ah()", pn_deliver_json)
+            assert trid == pn_deliver_json["trid"]
+    except UnboundLocalError:
+        print("Could not find simple_pn_ah_title_on_device.text")
 
     # driver.get_system_bars()
     # sb = driver.find_elements_by_android_uiautomator('new UiSelector().text("status_bar_latest_event_content")')
@@ -137,7 +144,7 @@ def simple_pn_ah():
 
 if __name__ == '__main__':
     # get_token_from_ui()
-    get_token_from_json()
+    # global user_token
     simple_pn_ah()
-    driver.quit()
     # image_pn_ah()
+    driver.quit()

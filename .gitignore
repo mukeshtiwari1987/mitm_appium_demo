@@ -1,3 +1,6 @@
+# Ignore pn_* json file
+pn_*.json
+ 
 # Intellij pycharm file
 .idea
 
