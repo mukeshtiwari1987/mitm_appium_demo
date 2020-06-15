@@ -18,7 +18,7 @@
 * Start Appium with following command ```appium --relaxed-security --log-timestamp --local-timezone```
 
 #### MITMProxy Set up
-* Start MITMProxy with following command ```mitmdump -s mitm_main.py --ignore-hosts '^(?![0-9\.]+:)(?!([^\.:]+\.)*netcoresmartech\.com:)'```
+* Start MITMProxy with following command ```mitmdump -s mitm_main.py --ignore-hosts '^(?![0-9\.]+:)(?!([^\.:]+\.)*netcoresmartech\.com:)(?!([^\.:]+\.)*requestcatcher\.com:)'```
 
 #### Execute Appium script
 * Start appium script with following command ```pytest -s test_pn.py --html=report.html --self-contained-html```
