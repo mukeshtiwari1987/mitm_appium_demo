@@ -7,6 +7,7 @@ pn_open_url = "https://pn.netcoresmartech.com/pn_open"
 # pn_rules_url = "https://pnrules.netcoresmartech.com/inappactivity/903c8fa4dcf982b0626b48a1a932fb1a.json"
 # pn_rule_inapp_url = "https://pnrules.netcoresmartech.com/inapp?clientid=71564&id=21"
 # pn_app_activity_url = "https://pn.netcoresmartech.com/app_activity"
+drop_mitm_ncore = "dropmitmncore1.requestcatcher.com"
 
 
 def request(flow: http.HTTPFlow):
@@ -15,6 +16,7 @@ def request(flow: http.HTTPFlow):
         content = flow.request.content.decode("utf-8")
         if content:
             save_pn_as_json(content, flow.request.pretty_url.split('/')[3])
+        flow.request.host = drop_mitm_ncore
 
 
 def save_pn_as_json(content, url_endpoint):
