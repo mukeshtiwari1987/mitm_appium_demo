@@ -31,6 +31,7 @@ def get_token_from_pn_reg_json():
 
 def get_pn_deliver_json():
     print("start of get_pn_deliver_json")
+    time.sleep(5)
     with open("pn_deliver.json", "r") as pn_deliver_file:
         json_file_content = json.load(pn_deliver_file)
         json_file_content = json.loads(json_file_content)
@@ -42,6 +43,7 @@ def get_pn_deliver_json():
 
 def get_pn_open_json():
     print("start of get_pn_open_json")
+    time.sleep(5)
     with open("pn_open.json", "r") as pn_open_file:
         json_file_content = json.load(pn_open_file)
         json_file_content = json.loads(json_file_content)

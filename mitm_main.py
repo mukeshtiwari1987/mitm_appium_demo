@@ -7,6 +7,7 @@ pn_open_url = "https://pn.netcoresmartech.com/pn_open"
 # pn_rules_url = "https://pnrules.netcoresmartech.com/inappactivity/903c8fa4dcf982b0626b48a1a932fb1a.json"
 # pn_rule_inapp_url = "https://pnrules.netcoresmartech.com/inapp?clientid=71564&id=21"
 # pn_app_activity_url = "https://pn.netcoresmartech.com/app_activity"
+track_appact_url = "https://npn.netcoresmartech.com/app/v1/track_appact"
 drop_mitm_ncore = "dropmitmncore1.requestcatcher.com"
 
 
@@ -15,15 +16,26 @@ def request(flow: http.HTTPFlow):
         print("BODY ---> {}".format(str(flow.request.content)))
         content = flow.request.content.decode("utf-8")
         if content:
-            save_pn_as_json(content, flow.request.pretty_url.split('/')[3])
+            save_sdk2_pn_as_json(content, flow.request.pretty_url.split('/')[3])
         flow.request.host = drop_mitm_ncore
 
+    if track_appact_url in flow.request.pretty_url:
+        print("BODY ---> {}".format(str(flow.request.content)))
+        content = flow.request.content.decode("utf-8")
+        if content:
+            save_sdk3_track_appact_as_json(content, flow.request.pretty_url.split('/')[5].split('?')[0])
 
-def save_pn_as_json(content, url_endpoint):
+
+def save_sdk2_pn_as_json(content, url_endpoint):
     content_before_data = content.split('=')
     content_after_data = content_before_data[1]
     with open(url_endpoint + ".json", "w") as write_file:
         json.dump(content_after_data, write_file)
+
+
+def save_sdk3_track_appact_as_json(content, url_endpoint):
+    with open(url_endpoint + ".json", "w") as write_file:
+        json.dump(content, write_file)
 
 
 # def response(flow):
